@@ -68,9 +68,17 @@ img {
 
 button {
     font-family: inherit;
-    cursor: pointer;
     border: none;
     background: none;
+}
+
+/* Custom cursor – default (black) and hover (yellow) */
+html, body {
+    cursor: url('assets/cursor-default.png') 2 2, auto;
+}
+a, button, .nav-link, .filter-btn, .project-card, .project-hero-media-link,
+.project-hero-link, .back-link, .footer-link, .nav-avatar {
+    cursor: url('assets/cursor-active.png') 2 2, pointer;
 }
 
 /* ===== Mobile Warning ===== */
@@ -476,83 +484,6 @@ button {
     position: relative;
 }
 
-.projects-side-nav {
-    position: fixed;
-    top: 50%;
-    right: 24px;
-    transform: translateY(-50%);
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  padding: 18px 20px;
-  min-width: 130px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    backdrop-filter: blur(10px);
-}
-
-.projects-side-link {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-  padding: 8px 4px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--color-text-muted);
-  background: transparent;
-  border: none;
-    transition: var(--transition-fast);
-    white-space: nowrap;
-  text-align: right;
-}
-
-.project-status-indicator {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.project-status-indicator.completed {
-    background: #22c55e;
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 1);
-    animation: blink-green 2s ease-in-out infinite;
-}
-
-@keyframes blink-green {
-    0%, 100% {
-        opacity: 1;
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-    }
-    50% {
-        opacity: 0.6;
-        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);
-    }
-}
-
-.projects-side-link:hover {
-  color: var(--color-text-secondary);
-  background: rgba(15, 23, 42, 0.03);
-}
-
-.projects-side-link.active {
-  color: var(--color-accent);
-  background: rgba(37, 99, 235, 0.08);
-  font-weight: 600;
-}
-
-@media (max-width: 1100px) {
-    .projects-side-nav {
-        display: none;
-    }
-}
-
 .projects-filters {
     display: flex;
     align-items: center;
@@ -582,76 +513,94 @@ button {
     background: var(--color-accent-light);
 }
 
-/* ===== Project Cards ===== */
+/* ===== Project Cards / Heroes ===== */
 .projects-grid {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xl);
 }
 
+.project-hero-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+}
+
 .project-card {
-    display: block;
     background: var(--color-white);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
+    border-radius: 20px;
     border: 1px solid var(--color-border);
-    transition: var(--transition-base);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
 }
 
 .project-card:hover {
     box-shadow: var(--shadow-lg);
     border-color: transparent;
-    transform: translateY(-2px);
+    transform: scale(1.02) translateY(-2px);
+    transition: box-shadow 0.25s ease, transform 0.2s ease, border-color 0.25s ease;
 }
 
-.project-thumbnail {
-    padding: 32px 40px 40px;
-    background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 50%, #2563EB 100%);
-    min-height: 520px;
+.project-hero {
+    display: flex;
+    padding: 32px 32px 32px;
+}
+
+.project-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: center;
+    gap: var(--spacing-xl);
+    width: 100%;
+}
+
+.project-hero-text {
     display: flex;
     flex-direction: column;
-}
-
-.project-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 24px;
     gap: 16px;
 }
 
-.project-header .project-tags {
-    max-width: 70%;
-    justify-content: flex-end;
+.project-hero-eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
 }
 
-.project-logo {
-    height: 48px;
-    width: auto;
-    object-fit: contain;
+.project-hero-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+}
+
+.project-hero-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    max-width: 520px;
 }
 
 .project-tags {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     gap: 8px;
-    align-items: center;
 }
 
 .tag {
     display: inline-flex;
     align-items: center;
-    padding: 8px 14px;
+    padding: 10px 14px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: var(--radius-full);
     font-size: 12px;
     font-weight: 500;
     color: var(--color-text-primary);
     white-space: nowrap;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    height: auto;
-    max-height: 36px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* "Coming soon" announcement tag */
@@ -745,7 +694,7 @@ button {
     font-weight: 500;
 }
 
-/* Project card color variations */
+Project card color variations
 .project-thumbnail.vyn-theme {
     background: linear-gradient(135deg, #0a0a0b 0%, #111113 50%, #18181b 100%);
 }
@@ -755,15 +704,43 @@ button {
 }
 
 .project-thumbnail.search-theme {
-    background: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 50%, #A78BFA 100%);
+    background: linear-gradient(135deg, #a570ff 0%, #a982fe 50%, #d5c8ff 100%);
 }
 
 .project-thumbnail.netsuite-theme {
-    background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 50%, #3B82F6 100%);
+    background: linear-gradient(135deg, #628cff 0%, #6a8dff 50%, #9ec3ff 100%);
 }
 
 .project-thumbnail.codebell-theme {
+    background: linear-gradient(135deg, #a4ffe1 0%, #059669 50%, #b8ffeb 100%);
+}
+
+/* Codebell card – make gradient live on the outer card so it fills fully */
+#project-codebell.project-card {
     background: linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%);
+}
+
+#project-codebell .project-thumbnail.codebell-theme {
+    /* Remove inner background so we don't see a white strip */
+    background: transparent;
+    /* Keep spacing/layout consistent with other cards */
+    padding: 32px 40px 40px;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Practo Care AI card – move gradient to outer card to avoid white strip */
+#project-practo-care-ai.project-card {
+    background: linear-gradient(135deg, #0D9488 0%, #14B8A6 50%, #2DD4BF 100%);
+}
+
+#project-practo-care-ai .project-thumbnail.practo-theme {
+    background: transparent;
+}
+
+.project-thumbnail.campusstore-theme {
+    background: linear-gradient(135deg, #ff6767 0%, #ff2323 50%, #ffa7a7 100%);
 }
 
 .project-logo-text.practo {
@@ -781,6 +758,122 @@ button {
     font-weight: 600;
     color: var(--color-white);
     letter-spacing: -0.02em;
+}
+
+/* ===== Project hero media ===== */
+.project-hero-media {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.project-hero-media-link {
+    display: block;
+    width: 100%;
+}
+
+.project-hero-media-frame {
+    position: relative;
+    border-radius: 24px;
+    padding: 4px;
+    background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 50%, #2563EB 100%);
+    box-shadow: 0 22px 45px rgba(15, 23, 42, 0.16);
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+}
+
+.project-hero-media-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+    pointer-events: none;
+}
+
+.project-hero-poster,
+.project-hero-video {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+    display: block;
+}
+
+.project-hero-video {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.project-hero-media-frame.is-playing .project-hero-video {
+    opacity: 1;
+}
+
+.project-hero-link {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-accent);
+}
+
+.project-hero-link:hover {
+    text-decoration: underline;
+}
+
+/* Hero-specific gradients */
+.project-hero-media--search {
+    background: linear-gradient(135deg, #ffffff 0%, #ffffff 40%, #ffffff 100%);
+}
+
+.project-hero-media--netsuite {
+    background: linear-gradient(135deg, #628cff 0%, #6a8dff 40%, #9ec3ff 100%);
+}
+
+.project-hero-media--codebell {
+    background: linear-gradient(135deg, #10B981 0%, #059669 45%, #22c55e 100%);
+}
+
+.project-hero-media--vyn {
+    background: linear-gradient(135deg, #0a0a0b 0%, #111113 40%, #18181b 100%);
+}
+
+.project-hero-media--practo-ai {
+    background: linear-gradient(135deg, #0D9488 0%, #14B8A6 40%, #2DD4BF 100%);
+}
+
+.project-hero-media--campus {
+    background: linear-gradient(135deg, #1E3A5F 0%, #2563EB 40%, #3B82F6 100%);
+}
+
+@media (max-width: 1024px) {
+    .project-hero-inner {
+        grid-template-columns: 1.1fr 1.4fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .project-hero {
+        padding: 24px 20px;
+    }
+
+    .project-hero-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .project-hero-media {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 640px) {
+    .project-hero-title {
+        font-size: 26px;
+    }
+
+    .project-hero-desc {
+        font-size: 15px;
+    }
 }
 
 /* ===== Footer ===== */

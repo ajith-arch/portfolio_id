@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize components
     initFilterButtons();
     initSmoothScroll();
-  initProjectSideNav();
+    initProjectHeroVideos();
 });
 
 // ===== Project Filtering =====
@@ -23,9 +23,11 @@ function initFilterButtons() {
             
             projectCards.forEach(card => {
                 const category = card.dataset.category;
+                const isHero = card.classList.contains('project-hero');
+                const visibleDisplay = isHero ? 'flex' : 'block';
                 
                 if (filter === 'all' || category === filter) {
-                    card.style.display = 'block';
+                    card.style.display = visibleDisplay;
                     // Add fade-in animation
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(10px)';
@@ -93,51 +95,31 @@ function updateActiveNavOnScroll() {
     });
 }
 
-// ===== Project Side Nav Scrollspy =====
-function initProjectSideNav() {
-  const sideNav = document.querySelector('.projects-side-nav');
-  if (!sideNav) return;
+// ===== Project hero video hover =====
+function initProjectHeroVideos() {
+  const frames = document.querySelectorAll('.project-hero-media-frame');
+  frames.forEach(frame => {
+    const video = frame.querySelector('.project-hero-video');
+    if (!video) return;
 
-  const links = Array.from(sideNav.querySelectorAll('.projects-side-link'));
-  const targets = links
-    .map(link => {
-      const hash = link.getAttribute('href');
-      if (!hash || !hash.startsWith('#')) return null;
-      const el = document.querySelector(hash);
-      return el ? { link, el } : null;
-    })
-    .filter(Boolean);
+    const play = () => {
+      frame.classList.add('is-playing');
+      const promise = video.play();
+      if (promise && typeof promise.catch === 'function') {
+        promise.catch(() => {});
+      }
+    };
 
-  // Smooth scroll for side links
-  targets.forEach(({ link, el }) => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const headerOffset = 80;
-      const rect = el.getBoundingClientRect();
-      const offsetTop = rect.top + window.pageYOffset - headerOffset;
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-    });
+    const pause = () => {
+      frame.classList.remove('is-playing');
+      video.pause();
+      video.currentTime = 0;
+    };
+
+    frame.addEventListener('mouseenter', play);
+    frame.addEventListener('mouseleave', pause);
+    frame.addEventListener('focusin', play);
+    frame.addEventListener('focusout', pause);
   });
-
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = `#${entry.target.id}`;
-          links.forEach(link => {
-            link.classList.toggle('active', link.getAttribute('href') === id);
-          });
-        }
-      });
-    },
-    {
-      root: null,
-      rootMargin: '-40% 0px -50% 0px',
-      threshold: 0,
-    }
-  );
-
-  targets.forEach(({ el }) => observer.observe(el));
 }
-
 

@@ -53,6 +53,12 @@ html {
   font-size: 16px;
 }
 
+/* Custom cursor – fine pointer only */
+@media (pointer: fine) {
+  html, body { cursor: url('../assets/cursor-default.png') 2 2, auto; }
+  a, button, .nav-link, .back-link, .side-nav-item { cursor: url('../assets/cursor-active.png') 2 2, pointer; }
+}
+
 body {
   background: var(--bg);
   color: var(--text);
