@@ -717,10 +717,11 @@ Project card color variations
 
 /* Codebell card – make gradient live on the outer card so it fills fully */
 #project-codebell.project-card {
-    background: linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #ffffff 50%, #ffffff 100%);
 }
 
 #project-codebell .project-thumbnail.codebell-theme {
+    /* Remove inner background so we don't see a white strip */
     /* Remove inner background so we don't see a white strip */
     background: transparent;
     /* Keep spacing/layout consistent with other cards */
@@ -810,6 +811,19 @@ Project card color variations
     opacity: 1;
 }
 
+/* Campus Store hero – show raw video with no blue overlay */
+.project-hero-media--campus {
+    background: transparent;
+}
+
+.project-hero-media--campus::before {
+    display: none;
+}
+
+#project-campus-store .project-hero-video {
+    opacity: 1;
+}
+
 .project-hero-link {
     margin-top: 8px;
     font-size: 14px;
@@ -823,7 +837,7 @@ Project card color variations
 
 /* Hero-specific gradients */
 .project-hero-media--search {
-    background: linear-gradient(135deg, #ffffff 0%, #ffffff 40%, #ffffff 100%);
+    background: linear-gradient(135deg, #37ff73 0%, #007d2c 40%, #009947 100%);
 }
 
 .project-hero-media--netsuite {

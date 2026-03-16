@@ -50,7 +50,7 @@
     <section class="hero" id="hero">
       <div class="hero-badge animate-in">
         <span class="badge-icon">🔍</span>
-        <span>Self-Initiated Project • Enterprise UX • Workflow Optimization</span>
+        <span>Official Project • Enterprise UX • Workflow Optimization</span>
       </div>
       
       <h1 class="animate-in delay-1">
@@ -59,7 +59,7 @@
       </h1>
       
       <p class="hero-subtitle animate-in delay-2">
-        While working at the University of Utah Campus Store, I identified significant friction in the Oracle NetSuite PDP publishing workflow. Through stakeholder interviews and usability testing with 20 internal users, I led a workflow optimization initiative that redesigned the publishing experience, reducing average completion time from 30–40 minutes to under 10 minutes.
+        While working with the University of Utah Campus Store, I collaborated with Campus Store employees, Campus Store NetSuite admins, and the official NetSuite team to identify significant friction in the Oracle NetSuite PDP publishing workflow. Through stakeholder interviews and usability testing with 20 internal users, I led the UX redesign initiative to optimize the publishing experience, reducing average completion time from 30–40 minutes to under 10 minutes.
       </p>
 
       <div class="hero-client-info animate-in delay-2">
@@ -73,14 +73,14 @@
         </div>
         <div class="client-badge">
           <span class="client-label">Project Type</span>
-          <span class="client-value">Self-Initiated UX Research</span>
+          <span class="client-value">Official Enterprise UX Project</span>
         </div>
       </div>
       
       <div class="hero-meta animate-in delay-3">
         <div class="meta-card">
           <span class="meta-label">Role</span>
-          <span class="meta-value">UX Designer (Self-Initiated)</span>
+          <span class="meta-value">Senior UX Designer</span>
         </div>
         <div class="meta-card">
           <span class="meta-label">Duration</span>
@@ -88,7 +88,7 @@
         </div>
         <div class="meta-card">
           <span class="meta-label">Stakeholders</span>
-          <span class="meta-value">NetSuite Admin, Developers, Content Creators</span>
+          <span class="meta-value">Campus Store Employees, NetSuite Admins, Official NetSuite Team, Content Creators</span>
         </div>
         <div class="meta-card">
           <span class="meta-label">Methods</span>
@@ -128,9 +128,17 @@
       </div>
 
       <div class="hero-visual animate-in delay-4">
-        <img src="../assets/thumbnail-netsuite.jpg" alt="Oracle NetSuite PDP workflow redesign thumbnail" class="hero-mockup-image">
+        <div class="pdp-video-preview scroll-scrub-video">
+          <video
+            class="pdp-preview-video scroll-scrub-video-el"
+            src="../assets/netsuit_pdp.mp4"
+            muted
+            playsinline
+            preload="auto"
+          ></video>
+        </div>
       </div>
-      <p class="hero-visual-caption">PDP Studio redesign — unified guided publishing flow.</p>
+      <p class="hero-visual-caption">PDP storefront preview — NetSuite publishing workflow in motion.</p>
     </section>
 
     <!-- Results Snapshot Section -->
@@ -249,7 +257,15 @@
       </div>
 
       <div class="problem-visual-block">
-        <img src="../assets/problem.jpg" alt="Current NetSuite PDP interface with annotated friction areas" class="problem-screenshot">
+        <div class="problem-video-preview scroll-scrub-video">
+          <video
+            class="problem-preview-video scroll-scrub-video-el"
+            src="../assets/problem_pdp.mp4"
+            muted
+            playsinline
+            preload="auto"
+          ></video>
+        </div>
         <p class="problem-screenshot-caption">Existing NetSuite PDP screen — publishing spread across tabs and external media workflow.</p>
       </div>
 
@@ -994,6 +1010,74 @@
       el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
       animateObserver.observe(el);
     });
+
+    // Scroll-scrub videos based on section progress (NetSuite PDP + problem PDP)
+    const initScrollScrubVideo = (container) => {
+      const video = container.querySelector('.scroll-scrub-video-el');
+      if (!video) return;
+
+      video.pause();
+      video.currentTime = 0;
+
+      video.addEventListener('loadedmetadata', () => {
+        const duration = video.duration || 0;
+        if (!duration) return;
+
+        const scrubTarget = container;
+        let ticking = false;
+
+        const updateFromScroll = () => {
+          ticking = false;
+          const rect = scrubTarget.getBoundingClientRect();
+          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+          const start = viewportHeight * 0.1;
+          const end = viewportHeight * 0.9;
+          const center = rect.top + rect.height / 2;
+          const rawProgress = (center - start) / (end - start);
+          const clamped = Math.max(0, Math.min(1, rawProgress));
+
+          video.currentTime = clamped * duration;
+        };
+
+        const onScroll = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(updateFromScroll);
+          }
+        };
+
+        updateFromScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        // Wheel-based scrubbing while hovered (prevents page scroll over the video)
+        let hovering = false;
+
+        const onWheel = (event) => {
+          if (!hovering) return;
+          event.preventDefault();
+
+          const delta = event.deltaY || event.wheelDelta || 0;
+          const direction = delta > 0 ? 1 : -1;
+
+          const scrubAmount = (Math.abs(delta) / 800) * duration * direction;
+          const nextTime = Math.max(0, Math.min(duration, video.currentTime + scrubAmount));
+          video.currentTime = nextTime;
+        };
+
+        scrubTarget.addEventListener('mouseenter', () => {
+          hovering = true;
+        });
+
+        scrubTarget.addEventListener('mouseleave', () => {
+          hovering = false;
+        });
+
+        scrubTarget.addEventListener('wheel', onWheel, { passive: false });
+      });
+    };
+
+    document.querySelectorAll('.scroll-scrub-video').forEach(initScrollScrubVideo);
   </script>
 </body>
 </html>

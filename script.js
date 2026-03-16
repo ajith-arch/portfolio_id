@@ -102,6 +102,15 @@ function initProjectHeroVideos() {
     const video = frame.querySelector('.project-hero-video');
     if (!video) return;
 
+    // Skip hover-driven behavior for Campus Store – it should autoplay continuously
+    if (frame.classList.contains('project-hero-media--campus')) {
+      const autoPlayPromise = video.play();
+      if (autoPlayPromise && typeof autoPlayPromise.catch === 'function') {
+        autoPlayPromise.catch(() => {});
+      }
+      return;
+    }
+
     const play = () => {
       frame.classList.add('is-playing');
       const promise = video.play();

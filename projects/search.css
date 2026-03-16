@@ -270,7 +270,8 @@ section {
 
 /* ===== Hero Section ===== */
 .hero {
-  padding: var(--spacing-3xl) 0;
+  /* Exact 20px gap above hero content */
+  padding: 20px 0 var(--spacing-3xl);
   border-bottom: none;
 }
 
@@ -278,13 +279,13 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  margin: 10px 0;
   background: var(--color-white);
   border: 1px solid var(--color-border);
   padding: 10px 16px;
   border-radius: 100px;
   font-size: 13px;
   color: var(--color-text-secondary);
-  margin-bottom: 24px;
 }
 
 .badge-icon {
@@ -293,7 +294,7 @@ section {
 
 .hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(40px, 6vw, 56px);
+  font-size: clamp(40px, 6vw, 52px);
   font-weight: 500;
   line-height: 1.1;
   color: var(--color-text);
@@ -301,7 +302,7 @@ section {
 }
 
 .hero h1 em {
-  font-style: italic;
+  font-style: normal;
   color: var(--color-accent);
 }
 
@@ -309,7 +310,7 @@ section {
   font-size: 18px;
   line-height: 1.7;
   color: var(--color-text-secondary);
-  max-width: 720px;
+  max-width: 980px;
   margin-bottom: 40px;
 }
 
@@ -378,6 +379,22 @@ section {
 
 .hero-visual {
   margin-top: var(--spacing-xl);
+  margin-bottom: 24px;
+  /* Match main content width while keeping height modest */
+  max-width: 1000px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
 }
 
 .hero-mockup {

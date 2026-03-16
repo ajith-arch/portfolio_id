@@ -275,7 +275,18 @@ nav .inner {
 }
 
 .hero-visual {
-  margin-top: 32px;
+  width: 100%;
+  max-width: 680px;
+  margin: 32px auto 24px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+}
+
+.hero-video {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* ===== MEDIA PLACEHOLDER BOXES ===== */
