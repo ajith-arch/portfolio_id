@@ -10,7 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<!-- EXPERIMENTAL SCROLL HERO: remove class "exp-scroll-hero" from <body> to disable (see styles.css + script.js blocks marked EXPERIMENTAL) -->
+<body class="exp-scroll-hero">
     <!-- Mobile Warning Overlay -->
     <div class="mobile-warning" id="mobileWarning">
         <div class="mobile-warning-content">
@@ -35,38 +36,57 @@
             </nav>
         </header>
 
-        <!-- Hero Section -->
-        <main class="main">
-            <section class="hero">
-                <div class="hero-content">
-                    <div class="hero-info">
-                        <h1 class="hero-name">Ajith Alphonse</h1>
-                        <div class="hero-details">
-                            <div class="hero-detail">
-                                <span class="detail-icon role-icon">💼</span>
-                                <span>UX Designer at University of Utah</span>
-                            </div>
-                            <div class="hero-detail">
-                                <span class="detail-icon location-icon">📍</span>
-                                <span>Salt Lake City, Utah</span>
-                            </div>
-                        </div>
-                        <div class="hero-badge">5+ Years of Experience</div>
+        <!-- Hero: full-bleed (outside .main so not limited by portfolio max-width) -->
+        <section class="hero" aria-label="Portfolio hero section">
+            <!-- EXPERIMENTAL: .hero-pinned-stage + .hero-scroll-tail — when body.exp-scroll-hero is off, wrappers use display:contents (no layout change) -->
+            <div class="hero-pinned-stage">
+                <video
+                    class="hero-bg-video"
+                    src="./assets/image/background.webm"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    aria-hidden="true">
+                </video>
+                <div class="hero-foreground-scroll">
+                    <div class="hero-identity">
+                        <h1 class="hero-identity-name">Ajith Alphonse</h1>
+                        <p class="hero-identity-line">💼 UX Designer at University of Utah</p>
+                        <p class="hero-identity-line hero-identity-line--muted">📍 Salt Lake City, Utah</p>
+                        <p class="hero-identity-chip-wrap">
+                            <span class="hero-identity-chip">5+ Years of Experience</span>
+                        </p>
                     </div>
-                    <div class="hero-embed">
-                        <span class="embed-hint">Look at the pupil</span>
-                        <iframe 
-                            src="https://my.spline.design/untitled-8VMQdhjX8qCgaSGKUwTq2Jlm-WZZ/" 
-                            frameborder="0" 
-                            width="100%" 
-                            height="100%"
-                            loading="lazy">
-                        </iframe>
-                        <div class="embed-cover"></div>
+                    <div class="hero-inner">
+                        <div class="hero-layout">
+                            <figure class="portrait-wrapper" aria-label="Interactive portrait reveal">
+                                <img
+                                    src="./assets/image/anime-one.png"
+                                    alt=""
+                                    class="portrait portrait-anime"
+                                    loading="eager"
+                                    decoding="async"
+                                    aria-hidden="true"
+                                >
+                                <img
+                                    src="./assets/image/real-one.png"
+                                    alt="Portrait of Ajith Alphonse"
+                                    class="portrait portrait-real"
+                                    fetchpriority="high"
+                                    loading="eager"
+                                    decoding="async"
+                                >
+                                <canvas class="portrait-canvas" aria-hidden="true"></canvas>
+                            </figure>
+                        </div>
                     </div>
                 </div>
-            </section>
+            </div>
+            <div class="hero-scroll-tail" aria-hidden="true"></div>
+        </section>
 
+        <main class="main">
             <!-- Projects Section -->
             <section class="projects" id="work">
                 <div class="projects-filters">
