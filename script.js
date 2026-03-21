@@ -100,29 +100,34 @@ function updateActiveNavOnScroll() {
 
 // ===== Project hero video hover =====
 function initProjectHeroVideos() {
-  const frames = document.querySelectorAll('.project-hero-media-frame');
-  frames.forEach(frame => {
-    const video = frame.querySelector('.project-hero-video');
+  var isTouch = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var frames = document.querySelectorAll('.project-hero-media-frame');
+
+  frames.forEach(function(frame) {
+    var video = frame.querySelector('.project-hero-video');
     if (!video) return;
 
-    // Skip hover-driven behavior for Campus Store – it should autoplay continuously
     if (frame.classList.contains('project-hero-media--campus')) {
-      const autoPlayPromise = video.play();
-      if (autoPlayPromise && typeof autoPlayPromise.catch === 'function') {
-        autoPlayPromise.catch(() => {});
-      }
+      var p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(function(){});
       return;
     }
 
-    const play = () => {
+    if (isTouch) {
+      video.setAttribute('autoplay', '');
+      video.setAttribute('loop', '');
       frame.classList.add('is-playing');
-      const promise = video.play();
-      if (promise && typeof promise.catch === 'function') {
-        promise.catch(() => {});
-      }
-    };
+      var tp = video.play();
+      if (tp && typeof tp.catch === 'function') tp.catch(function(){});
+      return;
+    }
 
-    const pause = () => {
+    var play = function() {
+      frame.classList.add('is-playing');
+      var pr = video.play();
+      if (pr && typeof pr.catch === 'function') pr.catch(function(){});
+    };
+    var pause = function() {
       frame.classList.remove('is-playing');
       video.pause();
       video.currentTime = 0;
@@ -323,6 +328,11 @@ function initLandingReveal() {
  */
 function initExpScrollHero() {
     if (!document.body.classList.contains('exp-scroll-hero')) return;
+
+    if (window.innerWidth <= 768) {
+        document.body.classList.remove('exp-scroll-hero');
+        return;
+    }
 
     const hero = document.querySelector('.hero');
     const foreground = document.querySelector('.hero-foreground-scroll');
