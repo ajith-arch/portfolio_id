@@ -628,13 +628,38 @@ body.exp-scroll-hero .footer {
 .about-back-link a {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    min-height: 40px;
-    font-size: 22px;
-    line-height: 1;
+    gap: 0.35em;
+    font-size: 13px;
+    line-height: 1.25;
     color: var(--color-text-secondary);
     text-decoration: none;
+}
+
+.about-back-link__arrow {
+    font-size: 1.12em;
+    line-height: 1;
+}
+
+.about-back-link__text {
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .about-back-link a {
+        min-width: 40px;
+        min-height: 40px;
+        justify-content: center;
+        font-size: 22px;
+        gap: 0;
+    }
+
+    .about-back-link__text {
+        display: none;
+    }
+
+    .about-back-link__arrow {
+        font-size: 1em;
+    }
 }
 
 .about-back-link a:hover {
