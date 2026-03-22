@@ -148,9 +148,18 @@ nav .inner {
 }
 
 .back-link {
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  margin: -6px 0;
+  padding: 0 2px;
+  font-size: 22px;
   font-weight: 500;
+  line-height: 1;
   color: var(--text-secondary);
+  text-decoration: none;
   transition: color 0.2s;
 }
 
@@ -2084,6 +2093,18 @@ footer {
 
 .footer-btn.primary:hover {
   filter: brightness(0.95);
+}
+
+/* Icon-only back control (replaces long “Back to portfolio” label) */
+a.footer-btn-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  padding: 14px 18px;
+  font-size: 20px;
+  line-height: 1;
+  text-decoration: none;
 }
 
 @media (max-width: 768px) {

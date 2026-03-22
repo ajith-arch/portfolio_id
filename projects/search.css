@@ -144,9 +144,18 @@ nav .inner {
 }
 
 .back-link {
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  margin: -6px 0;
+  padding: 0 2px;
+  font-size: 22px;
   font-weight: 500;
+  line-height: 1;
   color: var(--color-text-secondary);
+  text-decoration: none;
   transition: color 0.2s;
 }
 
@@ -2464,6 +2473,17 @@ footer {
 .footer-btn.primary:hover {
   background: var(--color-accent-dark);
   border-color: var(--color-accent-dark);
+}
+
+a.footer-btn-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  padding: 14px 18px;
+  font-size: 20px;
+  line-height: 1;
+  text-decoration: none;
 }
 
 /* ===== Animations ===== */

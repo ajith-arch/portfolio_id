@@ -148,8 +148,17 @@ nav .inner {
 }
 
 .back-link {
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  margin: -6px 0;
+  padding: 0 2px;
+  font-size: 22px;
+  line-height: 1;
   color: var(--text-secondary);
+  text-decoration: none;
   transition: color 0.2s;
 }
 

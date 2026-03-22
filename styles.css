@@ -24,6 +24,7 @@
     --radius-sm: 6px;
     --radius-md: 12px;
     --radius-lg: 20px;
+    --radius-xl: 24px;
     --radius-full: 9999px;
     
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
@@ -625,7 +626,13 @@ body.exp-scroll-hero .footer {
 }
 
 .about-back-link a {
-    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 22px;
+    line-height: 1;
     color: var(--color-text-secondary);
     text-decoration: none;
 }
@@ -753,6 +760,7 @@ body.exp-scroll-hero .footer {
 .about-quote {
     position: relative;
     margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
     padding: var(--spacing-lg) var(--spacing-xl);
     border-radius: var(--radius-xl);
     background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 60%), var(--color-white);
@@ -786,10 +794,10 @@ body.exp-scroll-hero .footer {
     }
 }
 
-/* Know Me page: extra space below fixed nav on small screens only */
+/* Know Me page: clear fixed nav on small screens without huge empty band */
 @media (max-width: 768px) {
     .about-body .about-main {
-        padding-top: calc(96px + var(--spacing-3xl) + var(--spacing-xl));
+        padding-top: calc(env(safe-area-inset-top, 0px) + 72px + var(--spacing-lg));
     }
 }
 
