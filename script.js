@@ -172,6 +172,24 @@ function initLandingReveal() {
     const PARALLAX_MAX = 7;
     const PARALLAX_EASE = 0.07;
 
+    const sweepConfigs = [
+        { yRatio: 0.21, yArc: 0.025, dir:  1, duration: 2600, delay:  900, timeOff: 47, scale: 0.90 },
+        { yRatio: 0.32, yArc: 0.020, dir: -1, duration: 2100, delay: 3700, timeOff: 23, scale: 0.85 },
+        { yRatio: 0.52, yArc: 0.020, dir:  1, duration: 1800, delay: 6000, timeOff: 71, scale: 0.85 },
+        { yRatio: 0.65, yArc: 0.020, dir: -1, duration: 1800, delay: 6000, timeOff: 95, scale: 0.85 },
+    ];
+    const sweeps = [];
+
+    function easeInOutCubic(v) {
+        return v < 0.5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2;
+    }
+
+    function sweepAlpha(p) {
+        if (p < 0.12) return p / 0.12;
+        if (p > 0.5)  return Math.max(0, 1 - (p - 0.5) / 0.5);
+        return 1;
+    }
+
     function blobNoise(angle, time) {
         return (
             0.28 * Math.sin(2 * angle + time * 0.6 + Math.sin(time * 0.25) * 0.7) +
@@ -231,6 +249,17 @@ function initLandingReveal() {
         ctx.filter = 'none';
         ctx.drawImage(realImg, 0, 0, w, h);
 
+        for (let si = 0; si < sweeps.length; si++) {
+            const s = sweeps[si];
+            if (s.done || s.opacity < 0.005) continue;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.globalAlpha = s.opacity;
+            drawBlob(s.x, s.y, s.radius, t + s.timeOff);
+            ctx.fillStyle = '#000';
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+
         if (reveal > 0.005) {
             ctx.globalCompositeOperation = 'destination-out';
             ctx.globalAlpha = Math.min(reveal, 1);
@@ -263,6 +292,22 @@ function initLandingReveal() {
         parallax.y += (ty - parallax.y) * PARALLAX_EASE;
         wrapper.style.transform = `translate3d(${parallax.x.toFixed(2)}px,${parallax.y.toFixed(2)}px,0)`;
 
+        for (let si = 0; si < sweeps.length; si++) {
+            const s = sweeps[si];
+            if (s.done) continue;
+            const elapsed = performance.now() - s.startTime;
+            if (elapsed < 0) continue;
+            const raw = Math.min(elapsed / s.duration, 1);
+            const p = easeInOutCubic(raw);
+            s.x = s.dir > 0
+                ? w * 0.15 + (w * 0.7) * p
+                : w * 0.85 - (w * 0.7) * p;
+            s.y = h * s.yRatio + Math.sin(raw * Math.PI) * h * s.yArc;
+            s.opacity = sweepAlpha(raw);
+            s.radius = baseRadius * s.scale;
+            if (raw >= 1) { s.done = true; }
+        }
+
         draw();
         requestAnimationFrame(loop);
     }
@@ -271,6 +316,16 @@ function initLandingReveal() {
         resize();
         draw();
         wrapper.classList.add('reveal-active');
+        const now = performance.now();
+        for (let si = 0; si < sweepConfigs.length; si++) {
+            const cfg = sweepConfigs[si];
+            sweeps[si] = {
+                yRatio: cfg.yRatio, yArc: cfg.yArc, dir: cfg.dir,
+                duration: cfg.duration, timeOff: cfg.timeOff, scale: cfg.scale,
+                startTime: now + cfg.delay, done: false,
+                x: 0, y: 0, opacity: 0, radius: 0
+            };
+        }
         requestAnimationFrame(loop);
     }
 
