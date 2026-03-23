@@ -149,7 +149,7 @@ function initProjectHeroVideos() {
 
 // ===== Landing hero portrait reveal =====
 function initLandingReveal() {
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
     const wrapper = document.querySelector('.portrait-wrapper');
     const canvas = document.querySelector('.portrait-canvas');
@@ -179,6 +179,21 @@ function initLandingReveal() {
         { yRatio: 0.65, yArc: 0.020, dir: -1, duration: 1800, delay: 6000, timeOff: 95, scale: 0.85 },
     ];
     const sweeps = [];
+    let sweepsPending = false;
+
+    function scheduleSweeps() {
+        const now = performance.now();
+        for (let si = 0; si < sweepConfigs.length; si++) {
+            const cfg = sweepConfigs[si];
+            sweeps[si] = {
+                yRatio: cfg.yRatio, yArc: cfg.yArc, dir: cfg.dir,
+                duration: cfg.duration, timeOff: cfg.timeOff, scale: cfg.scale,
+                startTime: now + cfg.delay, done: false,
+                x: 0, y: 0, opacity: 0, radius: 0
+            };
+        }
+        sweepsPending = false;
+    }
 
     function easeInOutCubic(v) {
         return v < 0.5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2;
@@ -308,6 +323,11 @@ function initLandingReveal() {
             if (raw >= 1) { s.done = true; }
         }
 
+        if (sweeps.length > 0 && !sweepsPending && sweeps.every(s => s.done)) {
+            sweepsPending = true;
+            setTimeout(scheduleSweeps, 5000);
+        }
+
         draw();
         requestAnimationFrame(loop);
     }
@@ -316,16 +336,7 @@ function initLandingReveal() {
         resize();
         draw();
         wrapper.classList.add('reveal-active');
-        const now = performance.now();
-        for (let si = 0; si < sweepConfigs.length; si++) {
-            const cfg = sweepConfigs[si];
-            sweeps[si] = {
-                yRatio: cfg.yRatio, yArc: cfg.yArc, dir: cfg.dir,
-                duration: cfg.duration, timeOff: cfg.timeOff, scale: cfg.scale,
-                startTime: now + cfg.delay, done: false,
-                x: 0, y: 0, opacity: 0, radius: 0
-            };
-        }
+        scheduleSweeps();
         requestAnimationFrame(loop);
     }
 
@@ -350,9 +361,11 @@ function initLandingReveal() {
         mouse.y = e.clientY - rect.top;
     }
 
-    wrapper.addEventListener('mouseenter', onEnter);
-    wrapper.addEventListener('mouseleave', onLeave);
-    wrapper.addEventListener('mousemove', onMove);
+    if (canHover) {
+        wrapper.addEventListener('mouseenter', onEnter);
+        wrapper.addEventListener('mouseleave', onLeave);
+        wrapper.addEventListener('mousemove', onMove);
+    }
     window.addEventListener('resize', resize);
 
     const bothLoaded = () =>
