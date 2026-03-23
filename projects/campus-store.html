@@ -122,45 +122,54 @@
       </div>
 
       <div class="hero-visual animate-in delay-4">
-        <div class="visual-placeholder">
-          <div class="icon">🖥️</div>
-          <span class="tag">Hero Storefront</span>
-          <span class="title">Full‑width screenshot of live Campus Store e‑commerce</span>
-          <span class="desc">Replace this placeholder with a hero image of the storefront. Use subtle fade‑in and light zoom on hover.</span>
+        <div class="pdp-video-preview scroll-scrub-video">
+          <video
+            class="pdp-preview-video scroll-scrub-video-el"
+            src="../assets/campusstore-webpage.webm"
+            muted
+            playsinline
+            preload="auto"
+          ></video>
         </div>
       </div>
+      <p class="hero-visual-caption">Live Campus Store e-commerce preview — scroll-driven storefront walkthrough.</p>
     </section>
 
     <!-- Context -->
     <section id="context">
       <span class="section-label">Context</span>
       <h2 class="section-title">A University‑Scale Storefront with Underperforming Conversion</h2>
-      <p class="section-desc">
-        The University of Utah Campus Store operates a full‑scale e‑commerce platform serving students, faculty, alumni, and visitors across apparel, laptops, accessories, drinkware, and academic essentials.
-        Despite steady traffic and strong brand demand, conversion metrics were underperforming — even though heuristics suggested the UI was “fine”.
-      </p>
 
-      <p>
-        Navigation looked familiar. Filters existed. Search was available. But users still took too long to find what they needed, and many never made it to checkout. The friction wasn’t obvious in pixels — it was buried in how the system organized products.
-      </p>
-
-      <div class="media-compare" style="margin-top: 32px;">
-        <div class="media-compare-grid">
-          <div class="media-compare-before">
-            <div class="screenshot-placeholder">
-              <div class="icon">📊</div>
-              <span class="tag">Analytics Dashboard</span>
-              <span class="title">Cart save rate &amp; funnel metrics</span>
-              <span class="desc">Add analytics dashboard screenshot here (blur sensitive numbers).</span>
-            </div>
-            <div class="screenshot-placeholder">
-              <div class="icon">📈</div>
-              <span class="tag">Baseline</span>
-              <span class="title">Cart saves at 24%</span>
-              <span class="desc">Simple graph showing baseline cart save rate before taxonomy changes.</span>
-            </div>
+      <div class="context-editorial">
+        <div class="context-editorial-top">
+          <figure class="context-editorial-figure context-editorial-figure--funnel">
+            <img
+              class="funnel-metrics-image"
+              src="../assets/funnel_metrics.jpg"
+              alt="Analytics dashboard: cart save rate and funnel metrics"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
+          <div class="context-editorial-copy">
+            <p class="section-desc">
+              The University of Utah Campus Store operates a full‑scale e‑commerce platform serving students, faculty, alumni, and visitors across apparel, laptops, accessories, drinkware, and academic essentials.
+              Despite steady traffic and strong brand demand, conversion metrics were underperforming — even though heuristics suggested the UI was “fine”.
+            </p>
+            <p>
+              Navigation looked familiar. Filters existed. Search was available. But users still took too long to find what they needed, and many never made it to checkout. The friction wasn’t obvious in pixels — it was buried in how the system organized products.
+            </p>
           </div>
         </div>
+        <figure class="context-editorial-figure context-editorial-figure--baseline">
+          <img
+            class="cart-saves-baseline-image"
+            src="../assets/carts_saves.jpg"
+            alt="Baseline cart save rate at 24% before taxonomy changes"
+            loading="lazy"
+            decoding="async"
+          >
+        </figure>
       </div>
     </section>
 
@@ -511,6 +520,74 @@
     }, observerOptions);
 
     sections.forEach(section => observer.observe(section));
+
+    // Scroll-scrub video preview (same interaction pattern as NetSuite PDP demo)
+    const initScrollScrubVideo = (container) => {
+      const video = container.querySelector('.scroll-scrub-video-el');
+      if (!video) return;
+
+      video.pause();
+      video.currentTime = 0;
+
+      video.addEventListener('loadedmetadata', () => {
+        const duration = video.duration || 0;
+        if (!duration) return;
+
+        const scrubTarget = container;
+        let ticking = false;
+
+        const updateFromScroll = () => {
+          ticking = false;
+          const rect = scrubTarget.getBoundingClientRect();
+          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+          const start = viewportHeight * 0.1;
+          const end = viewportHeight * 0.9;
+          const center = rect.top + rect.height / 2;
+          const rawProgress = (center - start) / (end - start);
+          const clamped = Math.max(0, Math.min(1, rawProgress));
+
+          video.currentTime = clamped * duration;
+        };
+
+        const onScroll = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(updateFromScroll);
+          }
+        };
+
+        updateFromScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        // Wheel-based scrubbing while hovered (matches NetSuite PDP behavior)
+        let hovering = false;
+
+        const onWheel = (event) => {
+          if (!hovering) return;
+          event.preventDefault();
+
+          const delta = event.deltaY || event.wheelDelta || 0;
+          const direction = delta > 0 ? 1 : -1;
+
+          const scrubAmount = (Math.abs(delta) / 800) * duration * direction;
+          const nextTime = Math.max(0, Math.min(duration, video.currentTime + scrubAmount));
+          video.currentTime = nextTime;
+        };
+
+        scrubTarget.addEventListener('mouseenter', () => {
+          hovering = true;
+        });
+
+        scrubTarget.addEventListener('mouseleave', () => {
+          hovering = false;
+        });
+
+        scrubTarget.addEventListener('wheel', onWheel, { passive: false });
+      });
+    };
+
+    document.querySelectorAll('.scroll-scrub-video').forEach(initScrollScrubVideo);
   </script>
 </body>
 </html>

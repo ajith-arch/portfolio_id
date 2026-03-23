@@ -864,6 +864,76 @@ section {
   object-fit: contain;
 }
 
+/* Campus Store — Context: editorial layout (funnel + copy row, baseline full width below) */
+.context-editorial {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.context-editorial-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.context-editorial-figure {
+  margin: 0;
+}
+
+.context-editorial-figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.08);
+  background: var(--surface);
+}
+
+.context-editorial-figure--funnel img {
+  max-height: min(420px, 50vh);
+}
+
+.context-editorial-figure--baseline img {
+  max-height: min(580px, 72vh);
+}
+
+.context-editorial-copy {
+  min-width: 0;
+}
+
+.context-editorial-copy .section-desc {
+  margin-top: 0;
+  margin-bottom: 18px;
+  max-width: none;
+}
+
+.context-editorial-copy p:not(.section-desc) {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .context-editorial-top {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .context-editorial-figure--funnel img {
+    max-height: min(480px, 56vh);
+  }
+
+  .context-editorial-figure--baseline img {
+    max-height: min(520px, 65vh);
+  }
+}
+
 .media-compare-after img {
   border: 1px solid var(--border);
   border-radius: 12px;

@@ -169,21 +169,19 @@ function initLandingReveal() {
     let t = 0;
 
     const parallax = { x: 0, y: 0 };
-    const PARALLAX_MAX = 10;
-    const PARALLAX_EASE = 0.10;
+    const PARALLAX_MAX = 7;
+    const PARALLAX_EASE = 0.07;
 
     function blobNoise(angle, time) {
         return (
-            0.22 * Math.sin(2 * angle + time * 0.8 + Math.sin(time * 0.3) * 0.5) +
-            0.18 * Math.sin(3 * angle - time * 0.6 + 1.3) +
-            0.14 * Math.sin(4 * angle + time * 0.45 + 3.8) +
-            0.10 * Math.sin(6 * angle - time * 0.35 + 2.1) +
-            0.07 * Math.sin(9 * angle + time * 0.75 + 5.2)
+            0.28 * Math.sin(2 * angle + time * 0.6 + Math.sin(time * 0.25) * 0.7) +
+            0.22 * Math.sin(3 * angle - time * 0.45 + 2.5) +
+            0.10 * Math.sin(5 * angle + time * 0.35 + 4.2)
         );
     }
 
     function drawBlob(cx, cy, radius, time) {
-        const n = 72;
+        const n = 32;
         const pts = [];
 
         for (let i = 0; i < n; i++) {
@@ -223,7 +221,7 @@ function initLandingReveal() {
         canvas.width = Math.round(w * dpr);
         canvas.height = Math.round(h * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        baseRadius = Math.min(w, h) * 0.17;
+        baseRadius = Math.min(w, h) * 0.19;
     }
 
     function draw() {
@@ -235,14 +233,12 @@ function initLandingReveal() {
 
         if (reveal > 0.005) {
             ctx.globalCompositeOperation = 'destination-out';
-            const blur = baseRadius * 0.22;
-            ctx.filter = `blur(${blur}px)`;
             ctx.globalAlpha = Math.min(reveal, 1);
 
             drawBlob(smooth.x, smooth.y, baseRadius, t);
             ctx.fillStyle = '#000';
             ctx.fill();
-            ctx.filter = 'none';
+
             ctx.globalAlpha = 1;
         }
 
