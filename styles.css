@@ -287,6 +287,16 @@ a, button, .nav-link, .filter-btn, .project-card, .project-hero-media-link,
     margin: 0 0 0.35rem;
 }
 
+.hero-identity-line--support {
+    font-size: clamp(0.75rem, 1.05vw, 0.8125rem);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    opacity: 0.88;
+    margin-top: 0.15rem;
+    margin-bottom: 0.45rem;
+}
+
 .hero-identity-line--muted {
     font-weight: 400;
     color: var(--color-text-muted);
@@ -336,6 +346,10 @@ a, button, .nav-link, .filter-btn, .project-card, .project-hero-media-link,
 
     .hero-identity-line {
         font-size: 0.75rem;
+    }
+
+    .hero-identity-line--support {
+        font-size: 0.6875rem;
     }
 
     .hero-identity-chip {
@@ -1052,10 +1066,6 @@ Project card color variations
     background: linear-gradient(135deg, #0D9488 0%, #14B8A6 50%, #2DD4BF 100%);
 }
 
-.project-thumbnail.search-theme {
-    background: linear-gradient(135deg, #a570ff 0%, #a982fe 50%, #d5c8ff 100%);
-}
-
 .project-thumbnail.netsuite-theme {
     background: linear-gradient(135deg, #628cff 0%, #6a8dff 50%, #9ec3ff 100%);
 }
@@ -1185,10 +1195,6 @@ Project card color variations
 }
 
 /* Hero-specific gradients */
-.project-hero-media--search {
-    background: linear-gradient(135deg, #37ff73 0%, #007d2c 40%, #009947 100%);
-}
-
 .project-hero-media--netsuite {
     background: linear-gradient(135deg, #628cff 0%, #6a8dff 40%, #9ec3ff 100%);
 }
@@ -1353,6 +1359,10 @@ Project card color variations
 
     .hero-identity-line {
         font-size: 0.8125rem;
+    }
+
+    .hero-identity-line--support {
+        font-size: 0.75rem;
     }
 
     .hero-identity-chip {
